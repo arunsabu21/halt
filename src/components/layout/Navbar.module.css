@@ -1,0 +1,76 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.link {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--color-primary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.loginBtn {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+}
+
+.loginBtn:hover {
+  background-color: rgba(45, 95, 76, 0.08);
+}
+
+.registerBtn {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-surface);
+  background-color: var(--color-primary);
+  text-decoration: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+}
+
+.registerBtn:hover {
+  background-color: var(--color-primary-hover);
+}
+
+@media (max-width: 640px) {
+  .links {
+    display: none;
+  }
+}
