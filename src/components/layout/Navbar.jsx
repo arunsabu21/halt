@@ -1,32 +1,35 @@
+import { Link } from "react-router-dom";
 import HaltLogo from "../common/HaltLogo";
-import styles from "./Navbar.module.css";
+import { CircleUser } from "lucide-react";
+import "../layout/Navbar.css";
 
 function Navbar() {
   return (
-    <nav className={styles.navbar}>
-      <a href="/" className={styles.logoLink}>
+    <nav className="navbar">
+      <Link to="/" className="logoLink">
         <HaltLogo size="sm" />
-      </a>
+      </Link>
 
-      <div className={styles.links}>
-        <a href="/" className={styles.link}>
+      <div className="links">
+        <Link to="/" className="link">
           Home
-        </a>
-        <a href="/trips" className={styles.link}>
+        </Link>
+        <Link to="/trips" className="link">
           Trips
-        </a>
-        <a href="/my-bookings" className={styles.link}>
+        </Link>
+        <Link to="/my-bookings" className="link">
           My Bookings
-        </a>
+        </Link>
       </div>
 
-      <div className={styles.actions}>
-        <a href="/login" className={styles.loginBtn}>
-          Login
-        </a>
-        <a href="/register" className={styles.registerBtn}>
+      <div className="actions">
+        <Link to="/auth/login" className="loginBtn">
+          <CircleUser size={20} />
+          <span>Login</span>
+        </Link>
+        <Link to="/auth/register" className="registerBtn">
           Register
-        </a>
+        </Link>
       </div>
     </nav>
   );

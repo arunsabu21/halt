@@ -5,7 +5,8 @@
   --color-accent: #e8a33d;
   --color-surface: #fafaf8;
   --color-surface-dark: #14181a;
-  --color-danger: #c4453a;
+  --color-pure-white: #ffffff;
+  --color-danger: #DE1135;
   --color-success: #3d8b5f;
   --color-text-primary: #1a1f1c;
   --color-text-muted: #6b7570;
@@ -36,7 +37,7 @@
 body {
   margin: 0;
   font-family: var(--font-primary);
-  background-color: var(--color-surface);
+  background-color: var(--color-pure-white);
   color: var(--color-text-primary);
 }
 

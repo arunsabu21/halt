@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../services/auth";
 import HaltLogo from "../components/common/HaltLogo";
 import { useToast } from "../hooks/useToast";
+import { encodeEmailToId } from "../utils/encoding";
+import getErrorMessage from "../utils/getErrorMessage";
 
 import {
   validateFullName,
@@ -30,15 +32,19 @@ function Register() {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const { showToast } = useToast();
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: registerUser,
     onSuccess: () => {
       showToast("success", "Registration successful. Check your email for the OTP.")
-      // TODO: redirect to /verify-otp 
+      sessionStorage.setItem("pending_verification_email", formData.email);
+
+      const encodedId = encodeEmailToId(formData.email);
+      navigate(`/auth/verify-otp/${encodedId}`);
     },
     onError: (error) => {
-      showToast("error", error.response?.data?.message || "Registration failed.")
+      showToast("error", getErrorMessage(error));
     },
   });
 
@@ -122,8 +128,6 @@ function Register() {
           </Link>
         </div>
 
-        <h1 className="register-title">Create your account</h1>
-
         <form className="register-form" onSubmit={handleSubmit} noValidate>
           {renderField("full_name", "Full Name")}
           {renderField("email", "Email", "email")}
@@ -136,7 +140,7 @@ function Register() {
         </form>
 
         <p className="register-footer">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to="/auth/login">Login</Link>
         </p>
       </div>
     </div>

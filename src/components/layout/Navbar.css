@@ -1,9 +1,14 @@
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-md) var(--spacing-xl);
-  background-color: var(--color-surface);
+  background-color: var(--color-pure-white);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -39,6 +44,9 @@
 }
 
 .loginBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--font-primary);
   font-size: 0.95rem;
   font-weight: 600;
@@ -61,7 +69,7 @@
   background-color: var(--color-primary);
   text-decoration: none;
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   transition: background-color 0.2s ease;
 }
 

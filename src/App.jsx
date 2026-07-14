@@ -1,19 +1,22 @@
-import { Routes, Route, useLocation } from "react-router-dom";
-import Navbar from "./components/layout/Navbar";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+import AuthLayout from "./layouts/AuthLayout";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
-
-const HIDE_NAVBAR_ON = ["/register"]
+import VerifyOtp from "./pages/VerifyOtp";
 
 function App() {
-  const location = useLocation();
-  const hideNavbar = HIDE_NAVBAR_ON.includes(location.pathname);
   return (
     <>
-      {!hideNavbar && <Navbar />}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+
+        <Route element={<AuthLayout />}>
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/verify-otp/:id" element={<VerifyOtp />} />
+        </Route>
       </Routes>
     </>
   );
