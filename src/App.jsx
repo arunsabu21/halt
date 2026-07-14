@@ -4,6 +4,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route element={<AuthLayout />}>
           <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/verify-otp/:id" element={<VerifyOtp />} />
+          <Route path="/auth/login" element={<Login />} />
         </Route>
       </Routes>
     </>

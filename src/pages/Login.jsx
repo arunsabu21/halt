@@ -1,32 +1,25 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../services/auth";
+import { loginUser } from "../services/auth";
 import HaltLogo from "../components/common/HaltLogo";
 import { useToast } from "../hooks/useToast";
-import { encodeEmailToId } from "../utils/encoding";
 import getErrorMessage from "../utils/getErrorMessage";
-
 import {
-  validateFullName,
   validateEmail,
-  validatePhoneNumber,
-  validatePassword,
+  validateLoginPassword,
 } from "../utils/registerValidators";
-import "../styles/Register.css";
+
+import "../styles/Login.css";
 
 const VALIDATORS = {
-  full_name: validateFullName,
   email: validateEmail,
-  phone_number: validatePhoneNumber,
-  password: validatePassword,
+  password: validateLoginPassword,
 };
 
-function Register() {
+function Login() {
   const [formData, setFormData] = useState({
     email: "",
-    full_name: "",
-    phone_number: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
@@ -35,13 +28,12 @@ function Register() {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: registerUser,
-    onSuccess: () => {
-      showToast("success", "Registration successful. Check your email for the OTP.")
-      sessionStorage.setItem("pending_verification_email", formData.email);
-
-      const encodedId = encodeEmailToId(formData.email);
-      navigate(`/auth/verify-otp/${encodedId}`);
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+      showToast("success", "Logged in successfully.");
+      navigate("/");
     },
     onError: (error) => {
       showToast("error", getErrorMessage(error));
@@ -69,12 +61,8 @@ function Register() {
       newErrors[field] = VALIDATORS[field](formData[field]);
     });
     setErrors(newErrors);
-    setTouched({
-      full_name: true,
-      email: true,
-      phone_number: true,
-      password: true,
-    });
+    setTouched({ email: true, password: true });
+
     return Object.values(newErrors).every((msg) => !msg);
   };
 
@@ -88,9 +76,9 @@ function Register() {
     const hasError = touched[name] && errors[name];
 
     return (
-      <div className="register-field">
+      <div className="login-field">
         <label htmlFor={name}>{label}</label>
-        <div className={`register-input-wrapper ${hasError ? "input-error" : ""}`}>
+        <div className={`login-input-wrapper ${hasError ? "input-error" : ""}`}>
           <input
             id={name}
             name={name}
@@ -108,8 +96,22 @@ function Register() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-              <line x1="12" y1="7" x2="12" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <line
+                x1="12"
+                y1="7"
+                x2="12"
+                y2="13"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
               <circle cx="12" cy="16.5" r="1" fill="currentColor" />
             </svg>
           )}
@@ -120,31 +122,42 @@ function Register() {
   };
 
   return (
-    <div className="register-page">
-      <div className="register-box">
-        <div className="register-header">
-          <Link to="/" className="register-logo-link">
+    <div className="login-page">
+      <div className="login-box">
+        <div className="login-header">
+          <Link to="/" className="login-logo-link">
             <HaltLogo size="sm" />
           </Link>
         </div>
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">Log in to manage your bookings.</p>
 
-        <form className="register-form" onSubmit={handleSubmit} noValidate>
-          {renderField("full_name", "Full Name")}
+        <form className="login-form" onSubmit={handleSubmit} noValidate>
           {renderField("email", "Email", "email")}
-          {renderField("phone_number", "Phone Number")}
           {renderField("password", "Password", "password")}
+          
+          {/* TODO: Forgot Password */}
+          <div className="login-forgot-row">
+            <Link to="" className="login-forgot-link">
+              Forgot Password ?
+            </Link>
+          </div>
 
-          <button type="submit" className="register-button" disabled={mutation.isPending}>
-            {mutation.isPending ? "Registering..." : "Register"}
+          <button
+            type="submit"
+            className="login-button"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        <p className="register-footer">
-          Already have an account? <Link to="/auth/login">Login</Link> 
+        <p className="login-footer">
+          Don't have an account? <Link to="/auth/register">Register</Link>
         </p>
       </div>
     </div>
   );
 }
 
-export default Register;
+export default Login;

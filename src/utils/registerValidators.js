@@ -29,3 +29,8 @@ export function validatePassword(value) {
 
     return "";
 }
+
+export function validateLoginPassword(value) {
+    if (!value) return "Password is required";
+    return "";
+}
