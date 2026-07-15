@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/auth";
 import HaltLogo from "../components/common/HaltLogo";
+import PageLoader from "../components/common/PageLoader";
 import { useToast } from "../hooks/useToast";
 import getErrorMessage from "../utils/getErrorMessage";
 import {
@@ -122,41 +123,43 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-box">
-        <div className="login-header">
-          <Link to="/" className="login-logo-link">
-            <HaltLogo size="sm" />
-          </Link>
-        </div>
-        <h2 className="login-title">Welcome Back</h2>
-        <p className="login-subtitle">Log in to manage your bookings.</p>
-
-        <form className="login-form" onSubmit={handleSubmit} noValidate>
-          {renderField("email", "Email", "email")}
-          {renderField("password", "Password", "password")}
-          
-          {/* TODO: Forgot Password */}
-          <div className="login-forgot-row">
-            <Link to="" className="login-forgot-link">
-              Forgot Password ?
+    <>
+      {mutation.isPending && <PageLoader />}
+      <div className="login-page">
+        <div className="login-box">
+          <div className="login-header">
+            <Link to="/" className="login-logo-link">
+              <HaltLogo size="sm" />
             </Link>
           </div>
+          <h2 className="login-title">Welcome Back</h2>
+          <p className="login-subtitle">Log in to manage your bookings.</p>
 
-          <button
-            type="submit"
-            className="login-button"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? "Logging in..." : "Login"}
-          </button>
-        </form>
+          <form className="login-form" onSubmit={handleSubmit} noValidate>
+            {renderField("email", "Email", "email")}
+            {renderField("password", "Password", "password")}
 
-        <p className="login-footer">
-          Don't have an account? <Link to="/auth/register">Register</Link>
-        </p>
+            <div className="login-forgot-row">
+              <Link to="/auth/forgot-password" className="login-forgot-link">
+                Forgot Password ?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              className="login-button"
+              disabled={mutation.isPending}
+            >
+              Login
+            </button>
+          </form>
+
+          <p className="login-footer">
+            Don't have an account? <Link to="/auth/register">Register</Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

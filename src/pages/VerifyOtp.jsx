@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { verifyOTP } from "../services/auth";
 import HaltLogo from "../components/common/HaltLogo";
+import PageLoader from "../components/common/PageLoader";
 import { useToast } from "../hooks/useToast";
 import { decodeIdToEmail } from "../utils/encoding";
 import getErrorMessage from "../utils/getErrorMessage";
@@ -93,6 +94,7 @@ function VerifyOtp() {
 
   return (
     <>
+      {mutation.isPending && <PageLoader />}
       <div className="verify-otp-page">
         <div className="verify-otp-box">
           <div className="verify-otp-header">

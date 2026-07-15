@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../services/auth";
 import HaltLogo from "../components/common/HaltLogo";
+import PageLoader from "../components/common/PageLoader";
 import { useToast } from "../hooks/useToast";
 import { encodeEmailToId } from "../utils/encoding";
 import getErrorMessage from "../utils/getErrorMessage";
@@ -37,7 +38,10 @@ function Register() {
   const mutation = useMutation({
     mutationFn: registerUser,
     onSuccess: () => {
-      showToast("success", "Registration successful. Check your email for the OTP.")
+      showToast(
+        "success",
+        "Registration successful. Check your email for the OTP.",
+      );
       sessionStorage.setItem("pending_verification_email", formData.email);
 
       const encodedId = encodeEmailToId(formData.email);
@@ -90,7 +94,9 @@ function Register() {
     return (
       <div className="register-field">
         <label htmlFor={name}>{label}</label>
-        <div className={`register-input-wrapper ${hasError ? "input-error" : ""}`}>
+        <div
+          className={`register-input-wrapper ${hasError ? "input-error" : ""}`}
+        >
           <input
             id={name}
             name={name}
@@ -108,8 +114,22 @@ function Register() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-              <line x1="12" y1="7" x2="12" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <line
+                x1="12"
+                y1="7"
+                x2="12"
+                y2="13"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
               <circle cx="12" cy="16.5" r="1" fill="currentColor" />
             </svg>
           )}
@@ -120,30 +140,37 @@ function Register() {
   };
 
   return (
-    <div className="register-page">
-      <div className="register-box">
-        <div className="register-header">
-          <Link to="/" className="register-logo-link">
-            <HaltLogo size="sm" />
-          </Link>
+    <>
+      {mutation.isPending && <PageLoader />}
+      <div className="register-page">
+        <div className="register-box">
+          <div className="register-header">
+            <Link to="/" className="register-logo-link">
+              <HaltLogo size="sm" />
+            </Link>
+          </div>
+
+          <form className="register-form" onSubmit={handleSubmit} noValidate>
+            {renderField("full_name", "Full Name")}
+            {renderField("email", "Email", "email")}
+            {renderField("phone_number", "Phone Number")}
+            {renderField("password", "Password", "password")}
+
+            <button
+              type="submit"
+              className="register-button"
+              disabled={mutation.isPending}
+            >
+              Register
+            </button>
+          </form>
+
+          <p className="register-footer">
+            Already have an account? <Link to="/auth/login">Login</Link>
+          </p>
         </div>
-
-        <form className="register-form" onSubmit={handleSubmit} noValidate>
-          {renderField("full_name", "Full Name")}
-          {renderField("email", "Email", "email")}
-          {renderField("phone_number", "Phone Number")}
-          {renderField("password", "Password", "password")}
-
-          <button type="submit" className="register-button" disabled={mutation.isPending}>
-            {mutation.isPending ? "Registering..." : "Register"}
-          </button>
-        </form>
-
-        <p className="register-footer">
-          Already have an account? <Link to="/auth/login">Login</Link> 
-        </p>
       </div>
-    </div>
+    </>
   );
 }
 

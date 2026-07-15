@@ -34,3 +34,9 @@ export function validateLoginPassword(value) {
     if (!value) return "Password is required";
     return "";
 }
+
+export function validatePasswordMatch(password, confirmPassword) {
+    if (!confirmPassword) return "Please confirm your password.";
+    if (password !== confirmPassword) return "Passwords do not match";
+    return "";
+}
