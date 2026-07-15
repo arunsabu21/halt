@@ -116,8 +116,8 @@ Font: **Figtree** — used across all UI text.
 - [x] Register page with validation
 - [x] Toast notification system
 - [x] Protected route handling
-- [ ] OTP verification page
-- [ ] Login page (full flow)
+- [x] OTP verification page
+- [x] Login page (full flow)
 - [ ] Trip search and listing
 - [ ] Seat selection and booking flow
 - [ ] My Bookings page
@@ -133,4 +133,5 @@ Backend API: [Halt API](https://github.com/arunsabu21/halt-api) — Django REST 
 ## Author
 
 **Arun Sabu**
+
 [GitHub](https://github.com/arunsabu21)
