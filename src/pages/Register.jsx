@@ -150,6 +150,8 @@ function Register() {
             </Link>
           </div>
 
+          <h1 className="register-title">Create Account</h1>
+
           <form className="register-form" onSubmit={handleSubmit} noValidate>
             {renderField("full_name", "Full Name")}
             {renderField("email", "Email", "email")}

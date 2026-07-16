@@ -25,6 +25,14 @@
   text-decoration: none;
 }
 
+.register-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  text-align: center;
+}
+
 .register-form {
   display: flex;
   flex-direction: column;
@@ -135,7 +143,7 @@
   text-decoration: none;
 }
 
-@media  (max-width: 768px) {
+@media (max-width: 768px) {
   .register-page {
     background-color: var(--color-pure-white);
   }

@@ -5,9 +5,11 @@ import "../layout/Navbar.css";
 function AuthNav() {
   return (
     <nav className="navbar">
-      <Link to="/" className="logoLink">
-        <HaltLogo size="sm" />
-      </Link>
+      <div className="navbar-inner">
+        <Link to="/" className="logoLink">
+          <HaltLogo size="sm" />
+        </Link>
+      </div>
     </nav>
   );
 }
