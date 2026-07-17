@@ -1,0 +1,155 @@
+.popular-routes {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 64px var(--spacing-lg);
+  font-family: var(--font-primary);
+}
+
+.popular-routes-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-xs);
+}
+
+.section-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-xs);
+}
+
+.section-subtitle {
+  font-size: var(--font-md);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.routes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.route-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  background: var(--color-pure-white);
+  border: 1px solid rgba(20, 24, 26, 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.route-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.route-card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.route-cities {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.route-city {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.route-path {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  gap: 4px;
+  color: var(--color-accent);
+}
+
+.route-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.route-dash {
+  flex: 1 1 auto;
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-accent) 0px,
+    var(--color-accent) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.route-arrow {
+  flex-shrink: 0;
+}
+
+.route-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.route-duration {
+  font-size: var(--font-default);
+  color: var(--color-text-muted);
+}
+
+.route-price {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.route-price-label {
+  font-size: var(--font-xs);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-right: 2px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .routes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .popular-routes {
+    padding: 40px var(--spacing-md);
+  }
+
+  .routes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .route-cities {
+    flex-wrap: wrap;
+  }
+}

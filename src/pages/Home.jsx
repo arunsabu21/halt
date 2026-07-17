@@ -1,12 +1,19 @@
+import Hero from "../components/home/Hero";
+import PopularRoutes from "../components/home/PopularRoutes";
+import HowItWorks from "../components/home/HowItWorks";
+import WhyChooseHalt from "../components/home/WhyChooseHalt";
+import CtaBanner from "../components/home/CtaBanner";
 import "../styles/Home.css";
 
 function Home() {
   return (
-    <div className="container">
-      <h1 className="title">Halt</h1>
-      <p className="subtitle">Book your bus tickets easily.</p>
-      <button className="button">Search Trips</button>
-    </div>
+    <>
+      <Hero />
+      <PopularRoutes />
+      <HowItWorks />
+      <WhyChooseHalt />
+      <CtaBanner />
+    </>
   );
 }
 
