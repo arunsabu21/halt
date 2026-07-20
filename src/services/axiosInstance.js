@@ -34,13 +34,17 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    if (originalRequest.url.includes("/auth/token/refresh/")) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       const refreshToken = localStorage.getItem("refresh_token");
 
       if (!refreshToken) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        window.location.href = "/auth/login";
+        window.location.replace = "/auth/login";
         return Promise.reject(error);
       }
 
@@ -71,7 +75,7 @@ axiosInstance.interceptors.response.use(
         isRefreshing = false;
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        window.location.href = "/auth/login";
+        window.location.replace = "/auth/login";
         return Promise.reject(refreshError);
       }
     }
