@@ -1,6 +1,8 @@
+<div align="center">
+
 # Halt
 
-<p align="center">
+
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
@@ -11,7 +13,8 @@
 ![CSS3](https://img.shields.io/badge/CSS3-3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![Lucide React](https://img.shields.io/badge/Lucide_React-1-000000?style=for-the-badge&logo=lucide&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-10-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
-</p>
+
+</div>
 
 A clean, modern frontend for **Halt** — a bus ticket booking platform. Built with React and Vite, and powered by the [Halt API](https://github.com/arunsabu21/halt-api) backend (Django REST Framework).
 
@@ -21,8 +24,8 @@ A clean, modern frontend for **Halt** — a bus ticket booking platform. Built w
 
 | Category     | Tool                                                 |
 | ------------ | ---------------------------------------------------- |
-| Framework    | React 18 (Vite)                                      |
-| Routing      | React Router v6                                      |
+| Framework    | React 19 (Vite)                                      |
+| Routing      | React Router v7                                      |
 | Server State | TanStack Query (React Query)                         |
 | HTTP Client  | Axios (with JWT interceptor + auto-refresh)          |
 | Styling      | Plain CSS with CSS custom properties (design tokens) |
@@ -118,7 +121,7 @@ Font: **Figtree** — used across all UI text.
 - [x] Protected route handling
 - [x] OTP verification page
 - [x] Login page (full flow)
-- [ ] Trip search and listing
+- [x] Trip search and listing
 - [ ] Seat selection and booking flow
 - [ ] My Bookings page
 
