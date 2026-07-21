@@ -1,0 +1,243 @@
+.trip-card {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+
+  background: var(--color-pure-white);
+  border: 1px solid rgba(20, 24, 26, 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+
+  font-family: var(--font-primary);
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.trip-card:hover {
+  box-shadow: 0 8px 24px rgba(20, 24, 26, 0.08);
+  border-color: rgba(45, 95, 76, 0.2);
+}
+
+.trip-card-main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Operator */
+.trip-card-operator {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 0 0 160px;
+  min-width: 0;
+}
+
+.trip-card-operator-name {
+  font-size: var(--font-default);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trip-card-bus-name {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Timing */
+.trip-card-timing {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.trip-card-time-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.trip-card-time {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.trip-card-time-label {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.trip-card-duration {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex: 1 1 auto;
+  min-width: 60px;
+}
+
+.trip-card-duration-line {
+  flex: 1 1 auto;
+  height: 1px;
+  background: rgba(20, 24, 26, 0.15);
+}
+
+.trip-card-duration-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Route */
+.trip-card-route {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Aside: fare + seats + button */
+.trip-card-aside {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex: 0 0 auto;
+  padding-left: var(--spacing-lg);
+  border-left: 1px solid rgba(20, 24, 26, 0.08);
+}
+
+.trip-card-fare {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.trip-card-fare-amount {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.trip-card-fare-label {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.trip-card-seats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--color-success);
+  white-space: nowrap;
+}
+
+.trip-card-seats-low {
+  color: var(--color-accent);
+}
+
+.trip-card-button {
+  flex: 0 0 auto;
+  background: var(--color-primary);
+  color: var(--color-pure-white);
+  border: none;
+  font-family: var(--font-primary);
+  font-size: var(--font-default);
+  font-weight: 600;
+  padding: 12px var(--spacing-lg);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.trip-card-button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.trip-card-button:disabled {
+  background: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.trip-card-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(45, 95, 76, 0.25);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .trip-card {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .trip-card-main {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .trip-card-operator {
+    flex: none;
+  }
+
+  .trip-card-route {
+    align-self: flex-start;
+  }
+
+  .trip-card-aside {
+    border-left: none;
+    border-top: 1px solid rgba(20, 24, 26, 0.08);
+    padding-left: 0;
+    padding-top: var(--spacing-md);
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .trip-card {
+    padding: var(--spacing-md);
+  }
+
+  .trip-card-aside {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+
+  .trip-card-fare {
+    align-items: flex-start;
+  }
+
+  .trip-card-button {
+    width: 100%;
+  }
+}
