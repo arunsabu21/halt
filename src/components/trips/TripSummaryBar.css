@@ -1,0 +1,89 @@
+.trip-summary-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+
+  background: var(--color-pure-white);
+  border-top: 1px solid rgba(20, 24, 26, 0.1);
+  box-shadow: 0 -8px 24px rgba(20, 24, 26, 0.06);
+  padding: var(--spacing-md) var(--spacing-lg);
+
+  font-family: var(--font-primary);
+}
+
+.trip-summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trip-summary-count {
+  font-size: var(--font-default);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.trip-summary-seats {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.trip-summary-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.trip-summary-amount {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.trip-summary-label {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.trip-summary-button {
+  flex: 0 0 auto;
+  background: var(--color-primary);
+  color: var(--color-pure-white);
+  border: none;
+  font-family: var(--font-primary);
+  font-size: var(--font-default);
+  font-weight: 600;
+  padding: 14px var(--spacing-xl);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.trip-summary-button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.trip-summary-button:disabled {
+  background: var(--color-text-muted);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .trip-summary-bar {
+    flex-wrap: wrap;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .trip-summary-button {
+    width: 100%;
+    order: 3;
+    margin-top: var(--spacing-sm);
+  }
+}

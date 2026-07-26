@@ -3,6 +3,8 @@ import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import Home from "./pages/Home";
 import SearchResults from "./pages/SearchResults";
+import TripDetails from "./pages/TripDetails";
+
 import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
 import Login from "./pages/Login";
@@ -16,6 +18,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/trips/:tripId/seats" element={<TripDetails />} />
         </Route>
 
         <Route element={<AuthLayout />}>
