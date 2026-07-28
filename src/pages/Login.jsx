@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { loginUser } from "../services/auth";
 import HaltLogo from "../components/common/HaltLogo";
 import PageLoader from "../components/common/PageLoader";
@@ -27,6 +27,7 @@ function Login() {
   const [touched, setTouched] = useState({});
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const mutation = useMutation({
     mutationFn: loginUser,
@@ -34,7 +35,8 @@ function Login() {
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
       showToast("success", "Logged in successfully.");
-      navigate("/");
+      const redirectTo = location.state?.from || "/";
+      navigate(redirectTo, { replace: true });
     },
     onError: (error) => {
       showToast("error", getErrorMessage(error));
@@ -132,8 +134,7 @@ function Login() {
               <HaltLogo size="sm" />
             </Link>
           </div>
-          <h2 className="login-title">Welcome Back</h2>
-          <p className="login-subtitle">Log in to manage your bookings.</p>
+          <h2 className="login-title">Login to your account</h2>
 
           <form className="login-form" onSubmit={handleSubmit} noValidate>
             {renderField("email", "Email", "email")}

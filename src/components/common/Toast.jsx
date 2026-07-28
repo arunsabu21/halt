@@ -1,4 +1,4 @@
-import { CheckCircle2, XCircle, X } from "lucide-react";
+import { CheckCircle2, CircleAlert, X } from "lucide-react";
 
 function Toast({ type, message, onDismiss }) {
   const isSuccess = type === "success";
@@ -9,7 +9,7 @@ function Toast({ type, message, onDismiss }) {
         {isSuccess ? (
           <CheckCircle2 size={20} color="var(--color-success)" />
         ) : (
-          <XCircle size={20} color="var(--color-danger)" />
+          <CircleAlert size={20} color="var(--color-danger)" />
         )}
       </div>
       <p className="toast-message">{message}</p>
