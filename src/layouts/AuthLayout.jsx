@@ -4,7 +4,10 @@ import AuthNav from "../components/layout/AuthNav";
 function AuthLayout() {
   return (
     <>
-      <AuthNav />
+      <div className="auth-nav-wrapper">
+        <AuthNav />
+      </div>
+
       <Outlet />
     </>
   );

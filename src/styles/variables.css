@@ -141,3 +141,9 @@ menu {
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 768px) {
+  .auth-nav-wrapper {
+    display: none;
+  }
+}

@@ -2,6 +2,7 @@
   position: sticky;
   bottom: 0;
   z-index: 10;
+  width: 100%;
 
   display: flex;
   align-items: center;
@@ -73,6 +74,12 @@
   background: var(--color-text-muted);
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.trip-summary-error {
+  font-size: var(--font-xs);
+  color: var(--color-danger);
+  margin-top: 2px;
 }
 
 @media (max-width: 640px) {

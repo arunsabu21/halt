@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import NotFound from "../assets/not-found.svg";
 import { getTripDetails, getTripSeats } from "../services/trips";
+import { initiateBooking } from "../services/bookings";
 import { getRouteStops } from "../services/routes";
 import getErrorMessage from "../utils/getErrorMessage";
 import { formatDate } from "../utils/formatDate";
@@ -21,7 +22,11 @@ import "../styles/TripDetails.css";
 
 function TripDetails() {
   const { tripId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [continueError, setContinueError] = useState(null);
 
   const {
     data: trip,
@@ -56,9 +61,29 @@ function TripDetails() {
     );
   };
 
-  const handleContinue = () => {
-    // TODO: Connect
-    console.log("Continue with seats:", selectedSeats);
+  const handleContinue = async () => {
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken) {
+      navigate("/auth/login", {
+        state: { from: location.pathname + location.search },
+      });
+      return;
+    }
+    
+    setContinueError(null);
+    setIsRedirecting(true);
+
+    try {
+      const { checkout_url } = await initiateBooking({
+        trip: tripId,
+        seatNumbers: selectedSeats,
+      });
+      window.location.href = checkout_url;
+    } catch (err) {
+      setContinueError(getErrorMessage(err));
+      setIsRedirecting(false);
+    }
   };
 
   if (isTripLoading) return <PageLoader />;
@@ -80,6 +105,7 @@ function TripDetails() {
     : [];
 
   return (
+    <div id="tripDetails">
     <div className="trip-details">
       <div className="trip-details-header">
         <div>
@@ -154,7 +180,10 @@ function TripDetails() {
         selectedSeats={selectedSeats}
         farePerSeat={trip.fare}
         onContinue={handleContinue}
+        isLoading={isRedirecting}
+        error={continueError}
       />
+    </div>
     </div>
   );
 }

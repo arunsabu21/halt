@@ -1,3 +1,7 @@
+#tripDetails{
+  background-color: var(--color-surface);
+}
+
 .trip-details {
   max-width: 1100px;
   margin: 0 auto;

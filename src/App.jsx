@@ -1,10 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import Home from "./pages/Home";
 import SearchResults from "./pages/SearchResults";
 import TripDetails from "./pages/TripDetails";
-
+import BookingConfirmation from "./pages/BookingConfirmation";
 import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
 import Login from "./pages/Login";
@@ -19,6 +20,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/trips/:tripId/seats" element={<TripDetails />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path="/bookings/confirmation"
+              element={<BookingConfirmation />}
+            />
+          </Route>
         </Route>
 
         <Route element={<AuthLayout />}>

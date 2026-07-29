@@ -1,6 +1,6 @@
 import "./TripSummaryBar.css";
 
-function TripSummaryBar({ selectedSeats, farePerSeat, onContinue }) {
+function TripSummaryBar({ selectedSeats, farePerSeat, onContinue, isLoading, error }) {
   const total = selectedSeats.length * Number(farePerSeat);
 
   return (
@@ -13,6 +13,7 @@ function TripSummaryBar({ selectedSeats, farePerSeat, onContinue }) {
         {selectedSeats.length > 0 && (
           <span className="trip-summary-seats">{selectedSeats.join(", ")}</span>
         )}
+        {error && <span className="trip-summary-error">{error}</span>}
       </div>
 
       <div className="trip-summary-total">
@@ -23,10 +24,10 @@ function TripSummaryBar({ selectedSeats, farePerSeat, onContinue }) {
       <button
         type="button"
         className="trip-summary-button"
-        disabled={selectedSeats.length === 0}
+        disabled={selectedSeats.length === 0 || isLoading}
         onClick={onContinue}
       >
-        Continue
+        {isLoading ? "Redirecting..." : "Select boarding & dropping points"}
       </button>
     </div>
   );
