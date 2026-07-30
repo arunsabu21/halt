@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import NotFound from "../assets/not-found.svg";
 import { getTripDetails, getTripSeats } from "../services/trips";
-import { initiateBooking } from "../services/bookings";
 import { getRouteStops } from "../services/routes";
 import getErrorMessage from "../utils/getErrorMessage";
 import { formatDate } from "../utils/formatDate";
 import { formatTime } from "../utils/formatTime";
 import { calculateDuration } from "../utils/calculateDuration";
 import { buildStopSequence } from "../utils/buildStopSequence";
+import { setBookingDraft } from "../utils/bookingDraft";
 import PageLoader from "../components/common/PageLoader";
 import EmptyState from "../components/common/EmptyState";
 import SeatMap from "../components/trips/SeatMap";
@@ -23,10 +23,7 @@ import "../styles/TripDetails.css";
 function TripDetails() {
   const { tripId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [isRedirecting, setIsRedirecting] = useState(false);
-  const [continueError, setContinueError] = useState(null);
 
   const {
     data: trip,
@@ -61,29 +58,25 @@ function TripDetails() {
     );
   };
 
-  const handleContinue = async () => {
+  const handleContinue = () => {
     const accessToken = localStorage.getItem("access_token");
 
     if (!accessToken) {
-      navigate("/auth/login", {
-        state: { from: location.pathname + location.search },
+      navigate("/auth/login/", {
+        state: { from: `/trips/${tripId}/seats/` },
       });
       return;
     }
-    
-    setContinueError(null);
-    setIsRedirecting(true);
 
-    try {
-      const { checkout_url } = await initiateBooking({
-        trip: tripId,
-        seatNumbers: selectedSeats,
-      });
-      window.location.href = checkout_url;
-    } catch (err) {
-      setContinueError(getErrorMessage(err));
-      setIsRedirecting(false);
-    }
+    setBookingDraft({
+      tripId,
+      selectedSeats,
+      boardingPoint: null,
+      dropPoint: null,
+      passengers: [],
+    });
+
+    navigate(`/trips/${tripId}/boarding/`);
   };
 
   if (isTripLoading) return <PageLoader />;
@@ -106,84 +99,84 @@ function TripDetails() {
 
   return (
     <div id="tripDetails">
-    <div className="trip-details">
-      <div className="trip-details-header">
-        <div>
-          <h1 className="trip-details-route">{trip.route}</h1>
-          <p className="trip-details-date">{formatDate(trip.travel_date)}</p>
-        </div>
-
-        <div className="trip-details-timing">
-          <div className="trip-details-time-block">
-            <span className="trip-details-time">
-              {formatTime(trip.departure_time)}
-            </span>
-            <span className="trip-details-time-label">Departure</span>
+      <div className="trip-details">
+        <div className="trip-details-header">
+          <div>
+            <h1 className="trip-details-route">{trip.route}</h1>
+            <p className="trip-details-date">{formatDate(trip.travel_date)}</p>
           </div>
-          <span className="trip-details-duration">{duration}</span>
-          <div className="trip-details-time-block">
-            <span className="trip-details-time">
-              {formatTime(trip.arrival_time)}
+
+          <div className="trip-details-timing">
+            <div className="trip-details-time-block">
+              <span className="trip-details-time">
+                {formatTime(trip.departure_time)}
+              </span>
+              <span className="trip-details-time-label">Departure</span>
+            </div>
+            <span className="trip-details-duration">{duration}</span>
+            <div className="trip-details-time-block">
+              <span className="trip-details-time">
+                {formatTime(trip.arrival_time)}
+              </span>
+              <span className="trip-details-time-label">Arrival</span>
+            </div>
+          </div>
+
+          <div className="trip-details-operator">
+            <span className="trip-details-operator-name">
+              {trip.bus.operator}
             </span>
-            <span className="trip-details-time-label">Arrival</span>
+            <span className="trip-details-bus-name">{trip.bus.bus_name}</span>
           </div>
         </div>
 
-        <div className="trip-details-operator">
-          <span className="trip-details-operator-name">
-            {trip.bus.operator}
-          </span>
-          <span className="trip-details-bus-name">{trip.bus.bus_name}</span>
-        </div>
-      </div>
+        <div className="trip-details-body">
+          <div className="trip-details-main">
+            <div className="detail-panel">
+              <h3 className="detail-panel-title">Select Your Seats</h3>
+              {isSeatsLoading ? (
+                <p className="detail-panel-empty">Loading seat map...</p>
+              ) : (
+                <SeatMap
+                  seats={seatData.seats}
+                  seatLayout={seatData.seat_layout}
+                  deckCount={seatData.deck_count}
+                  selectedSeats={selectedSeats}
+                  onToggleSeat={handleToggleSeat}
+                />
+              )}
+            </div>
 
-      <div className="trip-details-body">
-        <div className="trip-details-main">
-          <div className="detail-panel">
-            <h3 className="detail-panel-title">Select Your Seats</h3>
-            {isSeatsLoading ? (
-              <p className="detail-panel-empty">Loading seat map...</p>
+            {isStopsLoading ? (
+              <div className="detail-panel">
+                <p className="detail-panel-empty">Loading route details...</p>
+              </div>
+            ) : isStopsError ? (
+              <div className="detail-panel">
+                <p className="detail-panel-empty">
+                  Couldn't load route details.
+                </p>
+              </div>
             ) : (
-              <SeatMap
-                seats={seatData.seats}
-                seatLayout={seatData.seat_layout}
-                deckCount={seatData.deck_count}
-                selectedSeats={selectedSeats}
-                onToggleSeat={handleToggleSeat}
-              />
+              <BoardingPoints stops={stopSequence} />
             )}
           </div>
 
-          {isStopsLoading ? (
-            <div className="detail-panel">
-              <p className="detail-panel-empty">Loading route details...</p>
-            </div>
-          ) : isStopsError ? (
-            <div className="detail-panel">
-              <p className="detail-panel-empty">Couldn't load route details.</p>
-            </div>
-          ) : (
-            <BoardingPoints stops={stopSequence} />
-          )}
+          <div className="trip-details-aside">
+            <BusAmenities
+              amenities={trip.bus.amenities}
+              busType={trip.bus.bus_type}
+            />
+            <CancellationPolicy />
+          </div>
         </div>
 
-        <div className="trip-details-aside">
-          <BusAmenities
-            amenities={trip.bus.amenities}
-            busType={trip.bus.bus_type}
-          />
-          <CancellationPolicy />
-        </div>
+        <TripSummaryBar
+          selectedSeats={selectedSeats}
+          farePerSeat={trip.fare}
+          onContinue={handleContinue}
+        />
       </div>
-
-      <TripSummaryBar
-        selectedSeats={selectedSeats}
-        farePerSeat={trip.fare}
-        onContinue={handleContinue}
-        isLoading={isRedirecting}
-        error={continueError}
-      />
-    </div>
     </div>
   );
 }

@@ -1,9 +1,18 @@
 import axiosInstance from "./axiosInstance";
 
-export const initiateBooking = async ({ trip, seatNumbers }) => {
+export const initiateBooking = async ({
+  trip,
+  seatNumbers,
+  boardingPoint,
+  dropPoint,
+  passengers,
+}) => {
   const response = await axiosInstance.post("/bookings/initiate/", {
     trip,
     seat_numbers: seatNumbers,
+    boarding_point: boardingPoint,
+    drop_point: dropPoint,
+    passengers,
   });
 
   return response.data;

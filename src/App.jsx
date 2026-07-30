@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import SearchResults from "./pages/SearchResults";
 import TripDetails from "./pages/TripDetails";
 import BookingConfirmation from "./pages/BookingConfirmation";
+import BoardingPointSelect from "./pages/BoardingPointSelect";
+import PassengerDetails from "./pages/PassengerDetails";
 import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
 import Login from "./pages/Login";
@@ -23,8 +25,16 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route
+              path="/trips/:tripId/boarding"
+              element={<BoardingPointSelect />}
+            />
+            <Route
               path="/bookings/confirmation"
               element={<BookingConfirmation />}
+            />
+            <Route
+              path="/trips/:tripId/passengers"
+              element={<PassengerDetails />}
             />
           </Route>
         </Route>
