@@ -30,3 +30,20 @@ export const getBookingBySession = async (sessionId) => {
 
   return response.data;
 };
+
+export const getBookings = async () => {
+  const response = await axiosInstance.get("/bookings/");
+  return response.data;
+};
+
+export const getBookingDetails = async (bookingId) => {
+  const response = await axiosInstance.get(`/bookings/${bookingId}/`);
+  return response.data;
+};
+
+export const cancelPassenger = async (bookingId, passengerId) => {
+  const response = await axiosInstance.patch(
+    `/bookings/${bookingId}/passengers/${passengerId}/cancel/`,
+  );
+  return response.data;
+};
