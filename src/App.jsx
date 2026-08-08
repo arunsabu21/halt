@@ -10,6 +10,7 @@ import BookingConfirmation from "./pages/BookingConfirmation";
 import BoardingPointSelect from "./pages/BoardingPointSelect";
 import PassengerDetails from "./pages/PassengerDetails";
 import MyBookings from "./pages/account/MyBookings";
+import MyBookingsDetails from "./pages/account/MyBookingsDetails";
 import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
 import Login from "./pages/Login";
@@ -52,6 +53,10 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<AccountLayout />}>
             <Route path="/account/bookings" element={<MyBookings />} />
+            <Route
+              path="/account/bookings/:bookingId"
+              element={<MyBookingsDetails />}
+            />
           </Route>
         </Route>
       </Routes>

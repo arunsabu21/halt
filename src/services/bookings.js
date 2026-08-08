@@ -47,3 +47,11 @@ export const cancelPassenger = async (bookingId, passengerId) => {
   );
   return response.data;
 };
+
+export const downloadTicket = async (bookingId, passengerId) => {
+  const response = await axiosInstance.get(
+    `/bookings/${bookingId}/tickets/${passengerId}/`,
+    { responseType: "blob" }
+  );
+  return response.data;
+};
