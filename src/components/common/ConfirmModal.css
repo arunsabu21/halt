@@ -1,0 +1,118 @@
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 24, 26, 0.5);
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+.confirm-modal {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-pure-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  font-family: var(--font-primary);
+  animation: confirm-modal-in 0.2s ease;
+}
+
+@keyframes confirm-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.confirm-modal-title {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.confirm-modal-message {
+  font-size: var(--font-default);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0 0 var(--spacing-lg);
+}
+
+.confirm-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+}
+
+.confirm-modal-btn {
+  font-family: var(--font-primary);
+  font-size: var(--font-default);
+  font-weight: 600;
+  padding: 10px var(--spacing-lg);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(20, 24, 26, 0.12);
+  background: var(--color-pure-white);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.confirm-modal-btn:hover {
+  background: var(--color-surface);
+}
+
+.confirm-modal-btn-primary {
+  background: var(--color-primary);
+  color: var(--color-pure-white);
+  border-color: var(--color-primary);
+}
+
+.confirm-modal-btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.confirm-modal-btn-danger {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.confirm-modal-btn-danger:hover {
+  background: #b80e2b;
+}
+
+/* Mobile: bottom sheet with slide-up animation */
+@media (max-width: 640px) {
+  .confirm-modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .confirm-modal {
+    max-width: 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    animation: confirm-modal-slide-up 0.25s ease;
+  }
+
+  @keyframes confirm-modal-slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .confirm-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .confirm-modal-btn {
+    width: 100%;
+  }
+}

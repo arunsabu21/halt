@@ -14,13 +14,17 @@ import getErrorMessage from "../../utils/getErrorMessage";
 import { useToast } from "../../hooks/useToast";
 import PageLoader from "../../components/common/PageLoader";
 import EmptyState from "../../components/common/EmptyState";
+import ConfirmModal from "../../components/common/ConfirmModal";
 import "../../styles/BookingDetails.css";
+
+const CANCELLATION_CUTOFF_HOURS = 6;
 
 function MyBookingsDetails() {
   const { bookingId } = useParams();
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const [cancellingId, setCancellingId] = useState(null);
+  const [pendingCancel, setPendingCancel] = useState(null);
 
   const {
     data: booking,
@@ -45,14 +49,27 @@ function MyBookingsDetails() {
     );
   }
 
-  const handleCancel = async (passengerId, seatNumber) => {
-    // TODO: Replace window.confirm with a proper modal component
-    const confirmed = window.confirm(
-      `Cancel the ticket for seat ${seatNumber}? This cannot be undone.`,
+  const isBeforeCutoff = () => {
+    const departure = new Date(
+      `${booking.travel_date}T${booking.departure_time}`,
     );
-    if (!confirmed) return;
+    const cutoff = new Date(
+      departure.getTime() - CANCELLATION_CUTOFF_HOURS * 60 * 60 * 1000,
+    );
+    return new Date() < cutoff;
+  };
 
+  const canCancel = booking.status === "CONFIRMED" && isBeforeCutoff();
+
+  const handleCancelClick = (passengerId, seatNumber) => {
+    setPendingCancel({ passengerId, seatNumber });
+  };
+
+  const handleConfirmCancel = async () => {
+    const { passengerId, seatNumber } = pendingCancel;
+    setPendingCancel(null);
     setCancellingId(passengerId);
+
     try {
       await cancelPassenger(bookingId, passengerId);
       showToast("success", `Seat ${seatNumber} cancelled successfully.`);
@@ -85,10 +102,6 @@ function MyBookingsDetails() {
       showToast("error", "Could not download ticket");
     }
   };
-
-  // TODO: canCancel currently only checks Booking.status, but doesn't
-  // account for the trip having already departed/completed.
-  const canCancel = booking.status === "CONFIRMED";
 
   return (
     <div className="booking-details-page">
@@ -185,7 +198,7 @@ function MyBookingsDetails() {
                       <button
                         type="button"
                         className="passenger-action-btn passenger-action-btn-danger"
-                        onClick={() => handleCancel(p.id, p.seat_number)}
+                        onClick={() => handleCancelClick(p.id, p.seat_number)}
                         disabled={cancellingId === p.id}
                       >
                         {cancellingId === p.id ? "Cancelling..." : "Cancel"}
@@ -220,6 +233,20 @@ function MyBookingsDetails() {
           </div>
         </div>
       </div>
+
+      <ConfirmModal
+        open={Boolean(pendingCancel)}
+        title="Cancel this ticket?"
+        message={
+          pendingCancel
+            ? `Cancel the ticket for seat ${pendingCancel.seatNumber}? This cannot be undone, and a refund will be processed to your original payment method.`
+            : ""
+        }
+        confirmLabel="Cancel Ticket"
+        danger
+        onConfirm={handleConfirmCancel}
+        onCancel={() => setPendingCancel(null)}
+      />
     </div>
   );
 }
