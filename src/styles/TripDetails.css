@@ -114,10 +114,6 @@
 }
 
 @media (max-width: 480px) {
-  .trip-details {
-    padding: var(--spacing-md);
-  }
-
   .trip-details-timing {
     width: 100%;
     justify-content: space-between;

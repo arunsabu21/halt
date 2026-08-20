@@ -61,12 +61,11 @@ function Navbar() {
           <Link to="#" className="link">
             Help
           </Link>
-          <Link to="#" className="link">
-            Trips
-          </Link>
-          <Link to="#" className="link">
-            My Bookings
-          </Link>
+          {isLoggedIn && (
+            <Link to="/account/bookings" className="link">
+              My Bookings
+            </Link>
+          )}
         </div>
 
         <div className="actions">
@@ -86,7 +85,7 @@ function Navbar() {
               {isDropdownOpen && (
                 <div className="userDropdown">
                   <Link
-                    to="#"
+                    to="/account/bookings"
                     className="userDropdownItem"
                     onClick={() => setIsDropdownOpen(false)}
                   >
@@ -130,12 +129,15 @@ function Navbar() {
         <Link to="/" className="mobileLink" onClick={closeMenu}>
           Home
         </Link>
-        <Link to="#" className="mobileLink" onClick={closeMenu}>
-          Trips
-        </Link>
-        <Link to="#" className="mobileLink" onClick={closeMenu}>
-          My Bookings
-        </Link>
+        {isLoggedIn && (
+          <Link
+            to="/account/bookings"
+            className="mobileLink"
+            onClick={closeMenu}
+          >
+            My Bookings
+          </Link>
+        )}
         <div className="mobileDivider" />
 
         {isLoggedIn ? (
@@ -145,7 +147,11 @@ function Navbar() {
           </button>
         ) : (
           <>
-            <Link to="/auth/login" className="mobileLoginBtn" onClick={closeMenu}>
+            <Link
+              to="/auth/login"
+              className="mobileLoginBtn"
+              onClick={closeMenu}
+            >
               Login
             </Link>
             <Link
