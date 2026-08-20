@@ -11,6 +11,7 @@ import BoardingPointSelect from "./pages/BoardingPointSelect";
 import PassengerDetails from "./pages/PassengerDetails";
 import MyBookings from "./pages/account/MyBookings";
 import MyBookingsDetails from "./pages/account/MyBookingsDetails";
+import Profile from "./pages/account/Profile";
 import Register from "./pages/Register";
 import VerifyOtp from "./pages/VerifyOtp";
 import Login from "./pages/Login";
@@ -57,6 +58,7 @@ function App() {
               path="/account/bookings/:bookingId"
               element={<MyBookingsDetails />}
             />
+            <Route path="/account/profile" element={<Profile />} />
           </Route>
         </Route>
       </Routes>
