@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import HaltLogo from "../common/HaltLogo";
 import { CircleUser, Menu, X, ChevronDown, LogOut, Ticket } from "lucide-react";
 import { logoutUser } from "../../services/auth";
 import { useToast } from "../../hooks/useToast";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import "../layout/Navbar.css";
 
 function Navbar() {
@@ -12,10 +14,10 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const queryClient = useQueryClient();
+  const { data: currentUser, isLoading } = useCurrentUser();
 
-  // TODO: Replace localStorage auth check with TanStack Query (currentUser)
-  // After implementing the user profile (/whoami) endpoint
-  const isLoggedIn = Boolean(localStorage.getItem("access_token"));
+  const isLoggedIn = !!currentUser;
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -38,6 +40,11 @@ function Navbar() {
     }
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+
+    queryClient.removeQueries({
+      queryKey: ["currentUser"],
+    });
+
     setIsDropdownOpen(false);
     closeMenu();
     showToast("success", "Logged out successfully");
@@ -69,50 +76,54 @@ function Navbar() {
         </div>
 
         <div className="actions">
-          {isLoggedIn ? (
-            <div className="userMenu" ref={dropdownRef}>
-              <button
-                className="userMenuTrigger"
-                onClick={() => setIsDropdownOpen((prev) => !prev)}
-              >
-                <CircleUser size={20} />
-                <ChevronDown
-                  size={16}
-                  className={isDropdownOpen ? "chevronOpen" : ""}
-                />
-              </button>
+          <div className="actions">
+            {isLoading ? null : isLoggedIn ? (
+              <div className="userMenu" ref={dropdownRef}>
+                <button
+                  className="userMenuTrigger"
+                  onClick={() => setIsDropdownOpen((prev) => !prev)}
+                >
+                  <CircleUser size={20} />
+                  <ChevronDown
+                    size={16}
+                    className={isDropdownOpen ? "chevronOpen" : ""}
+                  />
+                </button>
 
-              {isDropdownOpen && (
-                <div className="userDropdown">
-                  <Link
-                    to="/account/bookings"
-                    className="userDropdownItem"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    <Ticket size={16} />
-                    <span>My Bookings</span>
-                  </Link>
-                  <button
-                    className="userDropdownItem userDropdownLogout"
-                    onClick={handleLogout}
-                  >
-                    <LogOut size={16} />
-                    <span>Logout</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <>
-              <Link to="/auth/login" className="loginBtn">
-                <CircleUser size={20} />
-                <span>Login</span>
-              </Link>
-              <Link to="/auth/register" className="registerBtn">
-                Register
-              </Link>
-            </>
-          )}
+                {isDropdownOpen && (
+                  <div className="userDropdown">
+                    <Link
+                      to="/account/bookings"
+                      className="userDropdownItem"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      <Ticket size={16} />
+                      <span>My Bookings</span>
+                    </Link>
+
+                    <button
+                      className="userDropdownItem userDropdownLogout"
+                      onClick={handleLogout}
+                    >
+                      <LogOut size={16} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link to="/auth/login" className="loginBtn">
+                  <CircleUser size={20} />
+                  <span>Login</span>
+                </Link>
+
+                <Link to="/auth/register" className="registerBtn">
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
         </div>
 
         <button

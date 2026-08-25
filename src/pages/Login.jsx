@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { loginUser } from "../services/auth";
 import HaltLogo from "../components/common/HaltLogo";
@@ -28,15 +28,22 @@ function Login() {
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
+
+      await queryClient.invalidateQueries({
+        queryKey: ["currentUser"],
+      });
+
       showToast("success", "Logged in successfully.");
+
       const redirectTo = location.state?.from || "/";
-      navigate(redirectTo, { replace: true });
+      navigate(redirectTo, { replace: true })
     },
     onError: (error) => {
       showToast("error", getErrorMessage(error));
