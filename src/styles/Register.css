@@ -9,15 +9,13 @@
 .register-box {
   width: 100%;
   max-width: 400px;
-  background-color: #ffffff;
-  border-radius: var(--radius-md);
+  background-color: var(--color-pure-white);
   padding: var(--spacing-xl);
 }
 
 .register-header {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--spacing-sm);
 }
 
 .register-logo-link {
@@ -26,7 +24,7 @@
 }
 
 .register-title {
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 700;
   color: var(--color-text-primary);
   margin-bottom: var(--spacing-xs);
@@ -52,15 +50,16 @@
 }
 
 .register-field input {
+  width: 100%;
+  height: 52px;
+  box-sizing: border-box;
+  padding: 0 16px;
   font-family: var(--font-primary);
   font-size: var(--font-md);
-  padding: 10px var(--spacing-md);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: var(--radius-sm);
   outline: none;
   transition: border-color 0.2s ease;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .register-field input:focus {
@@ -96,16 +95,16 @@
 }
 
 .register-button {
+  width: 100%;
+  height: 52px;
   font-family: var(--font-primary);
   font-size: var(--font-md);
   font-weight: 600;
   color: var(--color-surface);
   background-color: var(--color-primary);
   border: none;
-  padding: 12px var(--spacing-md);
   border-radius: var(--radius-sm);
   cursor: pointer;
-  margin-top: var(--spacing-xs);
   transition: background-color 0.2s ease;
 }
 
@@ -116,18 +115,6 @@
 .register-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-.register-error {
-  color: var(--color-danger);
-  font-size: 0.85rem;
-  text-align: center;
-}
-
-.register-success {
-  color: var(--color-success);
-  font-size: 0.85rem;
-  text-align: center;
 }
 
 .register-footer {
@@ -145,11 +132,37 @@
 
 @media (max-width: 768px) {
   .register-page {
-    background-color: var(--color-pure-white);
+    min-height: 100dvh;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 48px 20px 24px;
   }
 
   .register-box {
-    background-color: none;
-    box-shadow: none;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .register-title {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .register-form {
+    gap: var(--spacing-lg);
+  }
+
+  .register-field input {
+    height: 52px;
+    padding: 0 16px;
+    font-size: 16px;
+  }
+
+  .register-button {
+    height: 52px;
+    font-size: 16px;
+  }
+
+  .register-footer {
+    margin-top: var(--spacing-xl);
   }
 }
