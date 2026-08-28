@@ -1,16 +1,74 @@
+import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useQueries } from "@tanstack/react-query";
+import { searchTrips } from "../../services/trips";
+import { calculateDuration } from "../../utils/calculateDuration";
 import "./PopularRoutes.css";
 
-const routes = [
-  { from: "Kochi", to: "Bangalore", price: 899, duration: "9h 30m" },
-  { from: "Thiruvananthapuram", to: "Chennai", price: 1199, duration: "12h" },
-  { from: "Kozhikode", to: "Coimbatore", price: 449, duration: "5h" },
-  { from: "Ernakulam", to: "Hyderabad", price: 1499, duration: "16h" },
-  { from: "Kannur", to: "Mysuru", price: 799, duration: "8h" },
-  { from: "Kollam", to: "Madurai", price: 649, duration: "7h" },
+const FEATURED_ROUTES = [
+  { source: "Chennai", destination: "Bengaluru" },
+  { source: "Bengaluru", destination: "Hyderabad" },
+  { source: "Chennai", destination: "Coimbatore" },
+  { source: "Kochi", destination: "Bengaluru" },
+  { source: "Chennai", destination: "Madurai" },
 ];
 
-function PopularRoutes() {
+const getFeaturedDate = () => {
+  const date = new Date();
+  date.setDate(date.getDate() + 7); 
+  return date.toISOString().split("T")[0];
+};
+
+function PopularRoutes({ onLoadingChange }) {
+  const navigate = useNavigate();
+  const travelDate = getFeaturedDate();
+
+  const results = useQueries({
+    queries: FEATURED_ROUTES.map((route) => ({
+      queryKey: ["popular-route", route.source, route.destination, travelDate],
+      queryFn: () =>
+        searchTrips({
+          source: route.source,
+          destination: route.destination,
+          travel_date: travelDate,
+        }),
+      staleTime: 1000 * 60 * 60, 
+    })),
+  });
+
+  const isLoading = results.some((result) => result.isPending);
+
+  useEffect(() =>{
+    onLoadingChange(isLoading);
+  }, [isLoading, onLoadingChange]);
+
+  const cards = results
+    .map((result, index) => {
+      const trip = result.data?.[0];
+      if (!trip) return null;
+
+      return {
+        from: FEATURED_ROUTES[index].source,
+        to: FEATURED_ROUTES[index].destination,
+        travelDate,
+        price: trip.fare,
+        duration: calculateDuration(trip.departure_time, trip.arrival_time),
+      };
+    })
+    .filter(Boolean);
+
+  const handleClick = (route) => {
+    const params = new URLSearchParams({
+      source: route.from,
+      destination: route.to,
+      travel_date: route.travelDate,
+    });
+    navigate(`/search?${params.toString()}`);
+  };
+
+  if (cards.length === 0) return null;
+
   return (
     <section className="popular-routes">
       <div className="popular-routes-header">
@@ -22,11 +80,12 @@ function PopularRoutes() {
       </div>
 
       <div className="routes-grid">
-        {routes.map((route) => (
+        {cards.map((route) => (
           <button
             key={`${route.from}-${route.to}`}
             className="route-card"
             type="button"
+            onClick={() => handleClick(route)}
           >
             <div className="route-cities">
               <span className="route-city">{route.from}</span>
